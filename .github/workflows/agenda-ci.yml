@@ -1,0 +1,33 @@
+name: Java CI con Maven
+
+# Paso 2.3: Se activa con cada "push" a la rama main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Paso 4: Definición de variables de entorno
+    env:
+      DEVELOPER_NAME: "Salvador"
+
+    steps:
+    - name: 1. Descargar el código
+      uses: actions/checkout@v4
+
+    # Paso 3.1: Configurar el entorno (JDK 17) y Paso 6: Optimización (Caché)
+    - name: 2. Configurar JDK 17 con Caché
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven' # Esto guarda las dependencias para que sea más rápido
+
+    - name: 3. Imprimir saludo del desarrollador
+      run: echo "Iniciando el flujo de CI para $DEVELOPER_NAME"
+
+    # Paso 3.2: Compilación y Ejecución de Pruebas
+    - name: 4. Compilar y ejecutar tests con Maven
+      run: mvn test
